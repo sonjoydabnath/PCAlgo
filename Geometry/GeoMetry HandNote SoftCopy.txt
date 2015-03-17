@@ -1,0 +1,12 @@
+Triangle ABC; side a=BC,b=AC,c=AB;
+
+so 
+Angle A=acos((b*b+c*c-a*a)/(2*b*c));
+and thus B,C;
+
+Half-Perimetre, S=(a+b+c)/2;
+Area ABC=sqrt(S*(S-a)*(S-b)*(S-c));
+
+when the Triangle is inside a Circle and A,B,C points are on the circle Perimetre
+
+Radius of that Circle, R=(a*b*c)/(4*Area ABC);

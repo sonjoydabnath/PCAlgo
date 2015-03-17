@@ -1,0 +1,19 @@
+string pat;
+int fail[1000005];
+int patlen;
+
+void failure_func() {
+    fail[0]=0;
+    for(int i=1,k=0; i<patlen; i++) {
+        while(k>0&&pat[i]!=pat[k])
+            k=fail[k-1];
+        if(pat[i]==pat[k])
+            k++;
+        fail[i]=k;
+    }
+}
+
+
+
+
+to count partial matching of suffix and prefix of a string pattern

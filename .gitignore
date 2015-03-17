@@ -3,6 +3,7 @@
 *.lo
 *.o
 *.obj
+*.class
 
 # Precompiled Headers
 *.gch
@@ -26,3 +27,12 @@
 *.exe
 *.out
 *.app
+
+#Other files
+*.rar
+*.zip
+*.tar.gz
+*.bak
+*.old
+*.txt~
+*.cpp~

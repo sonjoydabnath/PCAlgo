@@ -62,6 +62,10 @@ double dist2(PT p, PT q)
 {
     return dot(p-q,p-q);
 }
+double dist(PT p, PT q)
+{
+    return sqrt(dist2(p,q));
+}
 double cross(PT p, PT q)
 {
     return p.x*q.y-p.y*q.x;

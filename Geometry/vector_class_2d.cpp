@@ -52,6 +52,10 @@ struct PT
     {
         return sqrt(mag2());
     }
+    bool operator < (PT a){
+        if(x==a.x)return y<a.y;
+        return x<a.x;
+    }
 };
 
 double dot(PT p, PT q)

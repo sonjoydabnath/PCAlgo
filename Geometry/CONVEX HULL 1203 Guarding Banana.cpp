@@ -136,7 +136,7 @@ int dc4[4]= {-1,1,0,0};                      ///or adjacent dir.
 int kn8r[8]= {1,2,2,1,-1,-2,-2,-1};          ///knight moves
 int kn8c[8]= {2,1,-1,-2,-2,-1,1,2};
 
-struct Vector
+struct PT
 {
     double x,y;
     void scan()
@@ -147,7 +147,7 @@ struct Vector
     {
         printf("(%lf,%lf)\n",x,y);
     }
-    Vector(double x=0,double y=0)
+    PT(double x=0,double y=0)
     {
         this->x=x;
         this->y=y;
@@ -162,20 +162,20 @@ struct Vector
     }
 };
 
-double dotp(Vector a, Vector b)
+double dotp(PT a, PT b)
 {
     return a.x*b.x+a.y*b.y;
 }
-double crossp(Vector a, Vector b)
+double crossp(PT a, PT b)
 {
     return a.x*b.y - a.y*b.x;
 }
-Vector operator-(Vector a,Vector b)
+PT operator-(PT a,PT b)
 {
-    return Vector(a.x-b.x, a.y-b.y);
+    return PT(a.x-b.x, a.y-b.y);
 }
 
-int Turn(Vector &V0,Vector &V1,Vector &V2)
+int Turn(PT &V0,PT &V1,PT &V2)
 {
     double v=crossp((V1-V0),(V2-V0));
     if(fabs(v)<EPS)return 0;
@@ -183,10 +183,10 @@ int Turn(Vector &V0,Vector &V1,Vector &V2)
     return -1;
 }
 
-Vector V[100007];
+PT V[100007];
 int hull[100007];
 
-bool cmp(Vector V1,Vector V2)
+bool cmp(PT V1,PT V2)
 {
     int t=Turn(V[0],V1,V2);
     if(!t)
@@ -229,7 +229,7 @@ int cHull(int N)
     return top;
 }
 
-double angel_b2in(Vector v0,Vector v1,Vector v2)
+double angel_b2in(PT v0,PT v1,PT v2)
 {
     double p=dotp(v0-v1,v2-v1);
     double mmag=(v0-v1).mag()*(v2-v1).mag();

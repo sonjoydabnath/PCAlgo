@@ -165,10 +165,10 @@ const int MAX = ( int )1e5;
 ///____________________________Main Coding Starts From Here________________________///
 
 
-string p, t;           //pattern, text
-int m, n;              //pattern length, text length
+string pattern, text;           //pattern, text
+int pattern_len, text_len;              //pattern length, text length
 int matches[100005];   // index of match positions
-int b[100005];         // used by the KMP algorithm
+int f[100005];         // used by the KMP algorithm
 int match_index;       //total matches counting index
 
 
@@ -178,14 +178,14 @@ int match_index;       //total matches counting index
 void kmpPreprocess()
 {
     int i = 0, j = -1;
-    b[i] = j;
-    while ( i < m )
+    f[i] = j;
+    while ( i < pattern_len )
     {
-        while ( j >= 0 && p[i] != p[j] )
-            j = b[j];
+        while ( j >= 0 && pattern[i] != pattern[j] )
+            j = f[j];
         i++;
         j++;
-        b[i] = j;
+        f[i] = j;
     }
 }
 
@@ -201,16 +201,16 @@ void report( int i )
 void kmpSearch()
 {
     int i = 0, j = 0;
-    while ( i < n )
+    while ( i < text_len )
     {
-        while ( j >= 0 && t[i] != p[j] )
-            j = b[j];
+        while ( j >= 0 && text[i] != pattern[j] )
+            j = f[j];
         i++;
         j++;
-        if ( j == m ) // a match is found
+        if ( j == pattern_len ) // a match is found
         {
-            report( i - m );
-            j = b[j];
+            report( i - pattern_len );
+            j = f[j];
         }
     }
 }
@@ -220,12 +220,12 @@ void kmpSearch()
  */
 void Search( string tt, string pp )
 {
-    t = tt;
-    p = pp;
-    n = tt.length();
-    m = pp.length();
+    text = tt;
+    pattern = pp;
+    text_len = tt.length();
+    pattern_len = pp.length();
     match_index = 0;
-    memset(b,0,sizeof b);
+    memset(f,0,sizeof f);
     kmpPreprocess();
     kmpSearch();
 }
@@ -235,8 +235,8 @@ void Search( string tt, string pp )
 int main()
 {
     string tt, pp;
-    tt = "abadabad";
-    pp = "aba";
+    tt = "abcdabcdabcdabcd";
+    pp = "abcd";
     Search( tt, pp );
     cout << pp << "\n";
     cout << tt << "\n";
@@ -253,6 +253,17 @@ int main()
     for( int i = 0; i < match_index; i++ )
         cout << matches[i] << " ";
     printf( "\n" );
+
+
+
+    string ano="abcdabcdabcdabcd";
+    Search(ano,ano);
+
+    printarray(f,0,12);
+
+    for(int i=0;i<20;i++){
+        cout<<i<<" "<<ano[i]<<" "<<f[i]<<"\n";
+    }
 
 }
 

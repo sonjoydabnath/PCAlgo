@@ -1,2 +1,2 @@
 # PCAlgo
-Most frequent used Algorithm in contest
+[P]rogramming [C]ontest [Algo]rithm

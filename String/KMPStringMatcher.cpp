@@ -165,22 +165,12 @@ const int MAX = ( int )1e5;
 ///____________________________Main Coding Starts From Here________________________///
 
 
-string pattern, text;           //pattern, text
-int pattern_len, text_len;              //pattern length, text length
-int matches[100005];   // index of match positions
-int f[100005];         // used by the KMP algorithm
-int match_index;       //total matches counting index
+int f[MAX + 7];       //fail array, used by the KMP algorithm
 
-
-/** preprocessing of the pattern
- *  failure function
- */
-void kmpPreprocess()
-{
-    int i = 0, j = -1;
-    f[i] = j;
-    while ( i < pattern_len )
-    {
+void fail_func( string pattern ) {
+    int i = 0, j = -1, N = pattern.size();
+    f[i] = -1;
+    while ( i < N ) {
         while ( j >= 0 && pattern[i] != pattern[j] )
             j = f[j];
         i++;
@@ -189,81 +179,30 @@ void kmpPreprocess()
     }
 }
 
-/** reports a match
- */
-void report( int i )
-{
-    matches[match_index++] = i;
-}
-
-/** searches the text for all occurences of the pattern
- */
-void kmpSearch()
-{
-    int i = 0, j = 0;
-    while ( i < text_len )
-    {
+int kmpSearch( string text, string pattern ) {
+    int i = 0, j = 0, cnt = 0;
+    int text_len = text.size(), pattern_len = pattern.size();
+    while ( i < text_len ) {
         while ( j >= 0 && text[i] != pattern[j] )
             j = f[j];
         i++;
         j++;
-        if ( j == pattern_len ) // a match is found
-        {
-            report( i - pattern_len );
+        if ( j == pattern_len ) {
+            cnt++;
             j = f[j];
         }
     }
+    return cnt;
 }
-
-
-/** searches the text tt for the pattern pp
- */
-void Search( string tt, string pp )
-{
-    text = tt;
-    pattern = pp;
-    text_len = tt.length();
-    pattern_len = pp.length();
-    match_index = 0;
-    memset(f,0,sizeof f);
-    kmpPreprocess();
-    kmpSearch();
-}
-
 
 // only for test purposes
 int main()
 {
     string tt, pp;
-    tt = "abcdabcdabcdabcd";
-    pp = "abcd";
-    Search( tt, pp );
-    cout << pp << "\n";
-    cout << tt << "\n";
-    for( int i = 0; i < match_index; i++ )
-        cout << matches[i] << " ";
-    printf( "\n" );
-
-
-    tt = "abababaa";
-    pp = "aba";
-    Search( tt, pp );
-    cout << pp << "\n";
-    cout << tt << "\n";
-    for( int i = 0; i < match_index; i++ )
-        cout << matches[i] << " ";
-    printf( "\n" );
-
-
-
-    string ano="abcdabcdabcdabcd";
-    Search(ano,ano);
-
-    printarray(f,0,12);
-
-    for(int i=0;i<20;i++){
-        cout<<i<<" "<<ano[i]<<" "<<f[i]<<"\n";
+    while( cin >> tt >> pp ) {
+        CLR( f );
+        fail_func( pp );
+        cout << "found " << kmpSearch( tt, pp ) << " times\n";
     }
-
 }
 

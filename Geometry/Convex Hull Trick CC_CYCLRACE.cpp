@@ -149,7 +149,6 @@ struct CYC {
 };
 
 CYC Cyclists[MAX + 7];
-vector< CYC > Leading;
 
 typedef pair<i64, i64> Line;
 #define M first //slope = m
@@ -176,12 +175,12 @@ bool isBad(  pair<i64, i64> L1, pair<i64, i64> L2, pair<i64, i64> L3 ) {
     Or, X = (C2 - C1)/(M1 - M2)
     that means IntersectPointX(L1, L2), X1 = (L2.C - L1.C)/(L1.M - L2.M)
     similiarly IntersectPointX(L1, L3), X2 = (L3.C - L1.C)/(L1.M - L3.M)
-    Now our removing condition is, X1 > X2. So it will be, */
+    Now our removing condition is, X1 > X2. So it will be, for lower Hull it will be reverse, that is X1 < X2 */
     //return ((L2.C - L1.C)/(double)(L1.M - L2.M)) > ((L3.C - L1.C)/(double)(L1.M - L3.M));
     /* Let's avoid Divide operation, Do a cross multiplication :D */
     return ( ( double )( L2.C - L1.C ) * ( L1.M - L3.M ) ) > ( ( double )( L3.C - L1.C ) * ( L1.M - L2.M ) );
+    /** it's by-default MAX_HULL/UpperHull/Max of Y = MX + C; for MIN_HULL/LowerHull/Min of Y = MX + C change the '>' into '<' */
 }
-
 
 void addLine( pair<i64, i64> currLine ) {
     int sz = UpHull.size();
@@ -192,13 +191,13 @@ void addLine( pair<i64, i64> currLine ) {
     UpHull.pb( currLine );
 }
 
-i64 query( i64 Time ) {
+i64 query( i64 Xi ) {
     if( LastBestInx >= UpHull.size() ) LastBestInx = UpHull.size() - 1;
-    while( LastBestInx + 1 < UpHull.size() && UpHull[LastBestInx].C + UpHull[LastBestInx].M * Time < UpHull[LastBestInx + 1].C + UpHull[LastBestInx + 1].M * Time )
+    /** it's by-default MAX_HULL/UpperHull/Max of Y = MX + C; for MIN_HULL/LowerHull/Min of Y = MX + C change the '>' into '<' */
+    while( ( LastBestInx + 1 < UpHull.size() ) && ( UpHull[LastBestInx + 1].C + UpHull[LastBestInx + 1].M * Xi ) > ( UpHull[LastBestInx].C + UpHull[LastBestInx].M * Xi ) )
         LastBestInx++;
-    return UpHull[LastBestInx].C + UpHull[LastBestInx].M * Time;
+    return UpHull[LastBestInx].C + UpHull[LastBestInx].M * Xi;
 }
-
 
 int main() {
 #ifndef ONLINE_JUDGE
@@ -209,14 +208,9 @@ int main() {
     if( deb_mode )
         srand( int( time( NULL ) ) );
 
-
     int i, j, k, l, n, m, q, a, b, c;
     i64 QueryType, Time, CycId, NewSpeed;
     CI( n, q );
-    i64 so_far_max_spd = 0LL;
-    int so_far_max_spd_inx = 0;
-    vector<Line> Lines;
-    vector<i64> Quest;
     rep0( j, q ) {
         read( QueryType );
         read( Time );
@@ -236,10 +230,8 @@ int main() {
         }
     }
 
-
-
-
     if( deb_mode )
         cerr << "EXECUTION TIME = " << ( 1.0 * clock() ) / CLOCKS_PER_SEC << " SECONDS\n";
     return 0;
 }
+

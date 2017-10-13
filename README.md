@@ -1,2 +1,2 @@
 # PCAlgo
-[P]rogramming [C]ontest [Algo]rithm
+[P]rogramming [C]ontest [Algo]rithms
